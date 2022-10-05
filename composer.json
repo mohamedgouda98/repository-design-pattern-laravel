@@ -1,6 +1,7 @@
 {
     "name": "unlimited/repository-design-pattern-laravel",
     "description": "repository_pattern",
+    "license": "MIT",
     "authors": [
         {
             "name": "macbookpro",
