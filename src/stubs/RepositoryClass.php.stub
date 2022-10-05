@@ -1,0 +1,9 @@
+<?php
+
+namespace App\Http\Repositories;
+
+use App\Http\Interfaces\RepositoryInterface;
+
+class RepositoryClass implements RepositoryInterface
+{
+}

@@ -1,0 +1,24 @@
+{
+    "name": "unlimited/repository",
+    "description": "repository_pattern",
+    "authors": [
+        {
+            "name": "macbookpro",
+            "email": "dev.mohamedgouda@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Unlimited\\Repository\\" : "src/"
+        },
+        "files": ["src/TestHelper.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Unlimited\\Repository\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.8"
+    }
+}
