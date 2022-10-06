@@ -10,6 +10,13 @@ Use the package manager [Composer](https://packagist.org/packages/unlimited/repo
 composer require unlimited/repository-design-pattern-laravel
 ```
 
+## Config
+
+add blow line to providers list in config/app.php
+```bash
+Unlimited\Repository\RepositoryServiceProvider::class,
+```
+
 ## Usage
 
 ```php

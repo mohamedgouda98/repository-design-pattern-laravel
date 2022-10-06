@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\File;
 
 trait CommandHelper
 {
+    public function isExistsFiles($interfacesPath, $interfaceName)
+    {
+        $interfacesPath .= '/' .$interfaceName . '.php';
+        return File::exists($interfacesPath);
+    }
+
     protected function createInterfacesFolder($InterfacesPath)
     {
         if (File::exists($InterfacesPath)) {
@@ -38,15 +44,15 @@ trait CommandHelper
         $this->info('Repositories folder was successfully created.');
     }
 
-    public function createInterfaceFile($InterfaceName)
+    public function createInterfaceFile($interfaceName)
     {
         $sourceFile =  __DIR__ . "/../../stubs/RepositoryInterface.php.stub";
         $copyPath = base_path() . '/app/http/Interfaces/';
 
         $contents = file_get_contents($sourceFile);
-        $new_contents = str_replace('RepositoryInterface', $InterfaceName, $contents);
+        $new_contents = str_replace('RepositoryInterface', $interfaceName, $contents);
 
-        $this->files->put($copyPath . $InterfaceName.'.php', $new_contents);
+        $this->files->put($copyPath . $interfaceName.'.php', $new_contents);
 
         $this->info('Repository Interface was successfully created.');
     }
@@ -71,7 +77,5 @@ trait CommandHelper
         Artisan::call('make:controller ' . $controllerName);
         $this->info('Controller class was successfully created.');
     }
-
-
 
 }

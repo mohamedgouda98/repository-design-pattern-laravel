@@ -1,0 +1,6 @@
+    $this->app->bind(
+        'App\Http\Interfaces\RepositoryInterface',
+        'App\Http\Repositories\RepositoryClass'
+        );
+
+//Bind
