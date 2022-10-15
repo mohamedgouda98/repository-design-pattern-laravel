@@ -27,10 +27,13 @@ class CreateRepository extends Command
     {
         $this->files = $filesystem;
 
-        $name = $this->argument('name');
 
-        $repositoriesPath = base_path() . '/app/http/Repositories';
-        $interfacesPath = base_path() . '/app/http/Interfaces';
+        $originalName = $this->argument('name');
+        $name = $this->getFileName($originalName);
+        $extraPath = $this->getDirctoryPath($originalName) . '/';
+
+        $repositoriesPath = base_path() . '/app/http/Repositories/' . $extraPath;
+        $interfacesPath = base_path() . '/app/http/Interfaces/' . $extraPath;
 
         $interfacesName= $name . 'Interface';
         $repositoryName= $name . 'Repository';
@@ -45,11 +48,11 @@ class CreateRepository extends Command
         $this->createInterfacesFolder($interfacesPath);
         $this->createRepositoriesFolder($repositoriesPath);
 
-        $this->createInterfaceFile($interfacesName);
+        $this->createInterfaceFile($interfacesPath, $interfacesName);
 
-        $this->createRepositoryFile($repositoryName, $interfacesName);
+        $this->createRepositoryFile($repositoriesPath, $repositoryName, $interfacesName);
 
-        $controllerName= $name .'Controller';
+        $controllerName= $originalName .'Controller';
         $this->createControllerFile($controllerName);
 
         $this->updateProviderFile($interfacesName, $repositoryName);

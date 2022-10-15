@@ -14,6 +14,21 @@ trait CommandHelper
         return File::exists($interfacesPath);
     }
 
+    public function getDirctoryPath($name)
+    {
+        $pathArray = explode('/', $name);
+        unset($pathArray[array_key_last($pathArray)]);
+
+        return implode('/', $pathArray);
+    }
+
+    public function getFileName($name)
+    {
+        $pathArray = explode('/', $name);
+
+        return end($pathArray);
+    }
+
     protected function createInterfacesFolder($InterfacesPath)
     {
         if (File::exists($InterfacesPath)) {
@@ -44,29 +59,27 @@ trait CommandHelper
         $this->info('Repositories folder was successfully created.');
     }
 
-    public function createInterfaceFile($interfaceName)
+    public function createInterfaceFile($interfacesPath, $interfaceName)
     {
         $sourceFile =  __DIR__ . "/../../stubs/RepositoryInterface.php.stub";
-        $copyPath = base_path() . '/app/http/Interfaces/';
 
         $contents = file_get_contents($sourceFile);
         $new_contents = str_replace('RepositoryInterface', $interfaceName, $contents);
 
-        $this->files->put($copyPath . $interfaceName.'.php', $new_contents);
+        $this->files->put($interfacesPath . $interfaceName.'.php', $new_contents);
 
         $this->info('Repository Interface was successfully created.');
     }
 
-    public function createRepositoryFile($repositoryName, $InterfaceName)
+    public function createRepositoryFile($repositoriesPath,$repositoryName, $InterfaceName)
     {
         $sourceFile =  __DIR__ . "/../../stubs/RepositoryClass.php.stub";
-        $copyPath = base_path() . '/app/http/Repositories/';
 
         $contents = file_get_contents($sourceFile);
         $new_contents = str_replace('RepositoryClass', $repositoryName, $contents);
         $new_contents = str_replace('RepositoryInterface', $InterfaceName, $new_contents);
 
-        $this->files->put($copyPath . $repositoryName.'.php', $new_contents);
+        $this->files->put($repositoriesPath . $repositoryName.'.php', $new_contents);
 
         $this->info('Repository Class was successfully created.');
 
