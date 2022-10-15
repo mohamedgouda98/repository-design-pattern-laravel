@@ -25,36 +25,6 @@ class RepositoryServiceProvider extends ServiceProvider
 
     public function register()
     {
-    $this->app->bind(
-        'App\Http\Interfaces\admin/CountryReInterface',
-        'App\Http\Repositories\admin/CountryReRepository'
-        );
-
-    $this->app->bind(
-        'App\Http\Interfaces\CountryInterface',
-        'App\Http\Repositories\CountryRepository'
-        );
-
-    $this->app->bind(
-        'App\Http\Interfaces\GoudInterface',
-        'App\Http\Repositories\GoudRepository'
-        );
-
-    $this->app->bind(
-        'App\Http\Interfaces\GoudInterface',
-        'App\Http\Repositories\GoudRepository'
-        );
-
-    $this->app->bind(
-        'App\Http\Interfaces\GoudUpInterface',
-        'App\Http\Repositories\GoudUpRepository'
-        );
-
-    $this->app->bind(
-        'App\Http\Interfaces\GoudKLInterface',
-        'App\Http\Repositories\GoudKLRepository'
-        );
-
 //Bind
     }
 
