@@ -4,13 +4,13 @@ namespace Unlimited\Repository\Console\Traits;
 
 trait ProviderHelper
 {
-    public function updateProviderFile($interfaceName, $repositoryName)
+    public function updateProviderFile($interfaceNamespaceWithFile, $repositoryNameSpaceWithFile)
     {
         $sourceFile =  __DIR__ . "/../../RepositoryServiceProvider.php";
         $copyPath =  __DIR__ . "/../../";
 
         $contents = file_get_contents($sourceFile);
-        $newBind = $this->getProviderBind($interfaceName, $repositoryName);
+        $newBind = $this->getProviderBind($interfaceNamespaceWithFile,$repositoryNameSpaceWithFile);
 
         $new_contents = str_replace('//Bind', $newBind, $contents);
 
@@ -24,8 +24,8 @@ trait ProviderHelper
         $bindSourceFile =  __DIR__ . "/../../stubs/ProviderBind.php.stub";
         $contentsBind = file_get_contents($bindSourceFile);
 
-        $newBind = str_replace('RepositoryInterface', $interfaceName, $contentsBind);
-        $newBind = str_replace('RepositoryClass', $repositoryName, $newBind);
+        $newBind = str_replace('InterfaceNameSpaceWithFile', $interfaceName, $contentsBind);
+        $newBind = str_replace('RepositoryNameSpaceWithFile', $repositoryName, $newBind);
         return $newBind;
     }
 

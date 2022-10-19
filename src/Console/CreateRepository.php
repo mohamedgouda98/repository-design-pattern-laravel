@@ -7,12 +7,14 @@ namespace Unlimited\Repository\Console;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Unlimited\Repository\Console\Traits\CommandHelper;
+use Unlimited\Repository\Console\Traits\DirectoryHelper;
 use Unlimited\Repository\Console\Traits\ProviderHelper;
 
 class CreateRepository extends Command
 {
     use CommandHelper;
     use ProviderHelper;
+    use DirectoryHelper;
 
     protected $signature="repository:create {name}";
 
@@ -27,7 +29,6 @@ class CreateRepository extends Command
     {
         $this->files = $filesystem;
 
-
         $originalName = $this->argument('name');
         $name = $this->getFileName($originalName);
         $extraPath = $this->getDirctoryPath($originalName) . '/';
@@ -37,6 +38,13 @@ class CreateRepository extends Command
 
         $interfacesName= $name . 'Interface';
         $repositoryName= $name . 'Repository';
+
+        $interfaceNameSpace = $this->getNameSpace('Interfaces\\', $originalName);
+        $repositoryNameSpace = $this->getNameSpace('Repositories\\', $originalName);
+
+        $interfaceNameSpaceWithFile = $this->getNameSpace('Interfaces\\', $originalName, false, $interfacesName);
+        $repositoryNameSpaceWithFile = $this->getNameSpace('Repositories\\', $originalName, false, $repositoryName);
+        $interfaceNameSpaceWithFileAndSemicolon = $this->getNameSpace('Interfaces\\', $originalName, true, $interfacesName);
 
         $this->isExists = $this->isExistsFiles($interfacesPath, $interfacesName);
         if($this->isExists == true)
@@ -48,14 +56,14 @@ class CreateRepository extends Command
         $this->createInterfacesFolder($interfacesPath);
         $this->createRepositoriesFolder($repositoriesPath);
 
-        $this->createInterfaceFile($interfacesPath, $interfacesName);
+        $this->createInterfaceFile($interfacesPath, $interfacesName, $interfaceNameSpace);
 
-        $this->createRepositoryFile($repositoriesPath, $repositoryName, $interfacesName);
+        $this->createRepositoryFile($repositoriesPath, $repositoryName, $interfacesName, $repositoryNameSpace, $interfaceNameSpaceWithFileAndSemicolon);
 
         $controllerName= $originalName .'Controller';
         $this->createControllerFile($controllerName);
 
-        $this->updateProviderFile($interfacesName, $repositoryName);
+        $this->updateProviderFile($interfaceNameSpaceWithFile, $repositoryNameSpaceWithFile);
     }
 
 }
