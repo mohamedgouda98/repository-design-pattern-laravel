@@ -1,6 +1,0 @@
-    $this->app->bind(
-        'InterfaceNameSpaceWithFile',
-        'RepositoryNameSpaceWithFile'
-        );
-
-//Bind

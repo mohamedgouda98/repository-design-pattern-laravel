@@ -42,8 +42,6 @@ class CreateRepository extends Command
         $interfaceNameSpace = $this->getNameSpace('Interfaces\\', $originalName);
         $repositoryNameSpace = $this->getNameSpace('Repositories\\', $originalName);
 
-        $interfaceNameSpaceWithFile = $this->getNameSpace('Interfaces\\', $originalName, false, $interfacesName);
-        $repositoryNameSpaceWithFile = $this->getNameSpace('Repositories\\', $originalName, false, $repositoryName);
         $interfaceNameSpaceWithFileAndSemicolon = $this->getNameSpace('Interfaces\\', $originalName, true, $interfacesName);
 
         $this->isExists = $this->isExistsFiles($interfacesPath, $interfacesName);
@@ -63,7 +61,6 @@ class CreateRepository extends Command
         $controllerName= $originalName .'Controller';
         $this->createControllerFile($controllerName);
 
-        $this->updateProviderFile($interfaceNameSpaceWithFile, $repositoryNameSpaceWithFile);
     }
 
 }

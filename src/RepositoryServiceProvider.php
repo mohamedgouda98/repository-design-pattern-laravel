@@ -6,9 +6,11 @@ namespace Unlimited\Repository;
 
 use Illuminate\Support\ServiceProvider;
 use Unlimited\Repository\Console\CreateRepository;
+use Unlimited\Repository\Console\Traits\ProviderHelper;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
+    use ProviderHelper;
 
     public function boot()
     {
@@ -19,13 +21,18 @@ class RepositoryServiceProvider extends ServiceProvider
                 CreateRepository::class,
             ]);
         }
-
-
     }
 
     public function register()
     {
-//Bind
+        $interfacePath =(base_path() . '/app/http/Interfaces');
+        $repositoriesPath =(base_path() . '/app/http/Repositories');
+
+        $originInterfacesFileName = $this->getFilesListInDirectory($interfacePath, '-13');
+        $originRepositoriesFileName = $this->getFilesListInDirectory($repositoriesPath, '-14');
+
+        $this->bindFiles($originInterfacesFileName, $originRepositoriesFileName);
+
     }
 
 }

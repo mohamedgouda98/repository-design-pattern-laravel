@@ -4,29 +4,38 @@ namespace Unlimited\Repository\Console\Traits;
 
 trait ProviderHelper
 {
-    public function updateProviderFile($interfaceNamespaceWithFile, $repositoryNameSpaceWithFile)
+    public $originFilesName= [];
+
+    public function getFilesListInDirectory($path, $endLength, $extraPath=null)
     {
-        $sourceFile =  __DIR__ . "/../../RepositoryServiceProvider.php";
-        $copyPath =  __DIR__ . "/../../";
 
-        $contents = file_get_contents($sourceFile);
-        $newBind = $this->getProviderBind($interfaceNamespaceWithFile,$repositoryNameSpaceWithFile);
+        $files = array_diff(scandir($path), array('.', '..'));
+        foreach ($files as $file)
+        {
+            $extension = mb_substr($file, -4);
+            if($extension == '.php')
+            {
+                $this-> originFilesName[] = ($extraPath)? $extraPath .  '\\' . substr($file, 0,$endLength) : substr($file, 0,$endLength);
+            }else{
+                $newPath = $path . '/' . $file;
+                $this->getFilesListInDirectory($newPath, $endLength, $file);
+            }
+        }
 
-        $new_contents = str_replace('//Bind', $newBind, $contents);
-
-        $this->files->put($copyPath . 'RepositoryServiceProvider.php', $new_contents);
-
-        $this->info('Provider Class was successfully Updated.');
+        return $this->originFilesName;
     }
 
-    public function getProviderBind($interfaceName, $repositoryName)
+    public function bindFiles($originInterfacesFileName, $originRepositoriesFileName)
     {
-        $bindSourceFile =  __DIR__ . "/../../stubs/ProviderBind.php.stub";
-        $contentsBind = file_get_contents($bindSourceFile);
+        $definedFiles = array_intersect($originInterfacesFileName, $originRepositoriesFileName);
 
-        $newBind = str_replace('InterfaceNameSpaceWithFile', $interfaceName, $contentsBind);
-        $newBind = str_replace('RepositoryNameSpaceWithFile', $repositoryName, $newBind);
-        return $newBind;
+        foreach ($definedFiles as $definedFile)
+        {
+            $this->app->bind(
+                'App\Http\Interfaces\\' . $definedFile . 'Interface',
+                'App\Http\Repositories\\' . $definedFile .'Repository'
+            );
+        }
+
     }
-
 }
