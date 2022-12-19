@@ -25,8 +25,8 @@ class RepositoryServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $interfacePath =(base_path() . '/app/http/Interfaces');
-        $repositoriesPath =(base_path() . '/app/http/Repositories');
+        $interfacePath =(base_path() . '/app/Http/Interfaces');
+        $repositoriesPath =(base_path() . '/app/Http/Repositories');
 
         $originInterfacesFileName = $this->getFilesListInDirectory($interfacePath, '-13');
         $originRepositoriesFileName = $this->getFilesListInDirectory($repositoriesPath, '-14');
