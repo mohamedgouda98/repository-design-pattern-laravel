@@ -32,8 +32,8 @@ trait ProviderHelper
         foreach ($definedFiles as $definedFile)
         {
             $this->app->bind(
-                'App\Http\Interfaces\\' . $definedFile . 'Interface',
-                'App\Http\Repositories\\' . $definedFile .'Repository'
+                config('RepositoryDesignPattern.interfacePath') . '\\' . $definedFile . 'Interface',
+                config('RepositoryDesignPattern.repositoryPath') . '\\' . $definedFile .'Repository'
             );
         }
 

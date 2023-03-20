@@ -21,10 +21,16 @@ class RepositoryServiceProvider extends ServiceProvider
                 CreateRepository::class,
             ]);
         }
+
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('RepositoryDesignPattern.php'),
+        ], 'repository-pattern-config');
     }
 
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'RepositoryDesignPattern');
+
         $interfacePath =(base_path() . '/app/Http/Interfaces');
         $repositoriesPath =(base_path() . '/app/Http/Repositories');
 
