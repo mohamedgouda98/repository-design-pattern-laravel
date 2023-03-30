@@ -28,7 +28,13 @@ trait DirectoryHelper
 
         $withFile = ($withFile) ? '\\' . $withFile : '';
         $semicolon = ($semicolon) ? ';' : '';
-
+        
+        // if(the user enter a repository name with no prefix)
+        if(count($pathArray) == 0){
+            // delete the '\' at the end of $directory to avoid the additional '\'
+            $directory =substr($directory, 0, -1);
+        }
+ 
         return 'App\\Http\\' . $directory . implode('\\', $pathArray) . $withFile . $semicolon;
     }
 
