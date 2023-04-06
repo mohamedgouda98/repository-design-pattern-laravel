@@ -33,8 +33,8 @@ class CreateRepository extends Command
         $name = $this->getFileName($originalName);
         $extraPath = $this->getDirctoryPath($originalName) . '/';
 
-        $repositoriesPath = base_path() . '/app/http/Repositories/' . $extraPath;
-        $interfacesPath = base_path() . '/app/http/Interfaces/' . $extraPath;
+        $repositoriesPath = base_path() . '/app/Http/Repositories/' . $extraPath;
+        $interfacesPath = base_path() . '/app/Http/Interfaces/' . $extraPath;
 
         $interfacesName= $name . 'Interface';
         $repositoryName= $name . 'Repository';
