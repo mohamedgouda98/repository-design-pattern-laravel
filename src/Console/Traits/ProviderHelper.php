@@ -2,13 +2,17 @@
 
 namespace Unlimited\Repository\Console\Traits;
 
+use Illuminate\Support\Facades\File;
+
 trait ProviderHelper
 {
     public $originFilesName= [];
 
     public function getFilesListInDirectory($path, $endLength, $extraPath=null)
     {
-
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
         $files = array_diff(scandir($path), array('.', '..'));
         foreach ($files as $file)
         {
