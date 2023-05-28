@@ -23,5 +23,10 @@ Unlimited\Repository\RepositoryServiceProvider::class,
 php artisan repository:create RepositoryName
 ```
 
+u can use --resource 
+```php
+php artisan repository:create RepositoryName --resource
+```
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

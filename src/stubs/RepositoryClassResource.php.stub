@@ -1,0 +1,37 @@
+<?php
+
+namespace {Namespace}
+use interfaceNamespaceWithFile
+
+class RepositoryClass implements RepositoryInterface
+{
+    public function index()
+    {
+        //toDo
+    }
+    public function create()
+    {
+        //toDo
+    }
+    public function store($request)
+    {
+        //toDo
+    }
+
+    public function show($id)
+    {
+        //toDo
+    }
+    public function edit($id)
+    {
+        //toDo
+    }
+    public function update($request, $id)
+    {
+        //toDo
+    }
+    public function destroy($id)
+    {
+        //toDo
+    }
+}

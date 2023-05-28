@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\Artisan;
 
 trait CommandHelper
 {
-    public function createInterfaceFile($interfacesPath, $interfaceName, $interfaceNameSpace)
+    public function createInterfaceFile($interfacesPath, $interfaceName, $interfaceNameSpace, $isResource = false)
     {
-        $sourceFile =  __DIR__ . "/../../stubs/RepositoryInterface.php.stub";
+        if($isResource){
+            $sourceFile = __DIR__ . "/../../stubs/RepositoryInterfaceResource.php.stub";
+        }else{
+            $sourceFile =  __DIR__ . "/../../stubs/RepositoryInterface.php.stub";
+        }
 
         $contents = file_get_contents($sourceFile);
         $new_contents = str_replace('RepositoryInterface', $interfaceName, $contents);
@@ -20,9 +24,13 @@ trait CommandHelper
         $this->info('Repository Interface was successfully created.');
     }
 
-    public function createRepositoryFile($repositoriesPath,$repositoryName, $InterfaceName, $repositoryNameSpace, $interfaceNameSpaceWithFileAndSemicolon)
+    public function createRepositoryFile($repositoriesPath,$repositoryName, $InterfaceName, $repositoryNameSpace, $interfaceNameSpaceWithFileAndSemicolon, $isResource=false)
     {
-        $sourceFile =  __DIR__ . "/../../stubs/RepositoryClass.php.stub";
+        if($isResource){
+            $sourceFile = __DIR__ . "/../../stubs/RepositoryClassResource.php.stub";
+        }else{
+            $sourceFile =  __DIR__ . "/../../stubs/RepositoryClass.php.stub";
+        }
 
         $contents = file_get_contents($sourceFile);
         $new_contents = str_replace('RepositoryClass', $repositoryName, $contents);
@@ -37,9 +45,15 @@ trait CommandHelper
 
     }
 
-    public function createControllerFile($controllerName)
+    public function createControllerFile($controllerName, $resource = false)
     {
-        Artisan::call('make:controller ' . $controllerName);
+        if($resource)
+        {
+            Artisan::call('make:controller ' . $controllerName . ' --resource');
+
+        }else{
+            Artisan::call('make:controller ' . $controllerName);
+        }
         $this->info('Controller class was successfully created.');
     }
 

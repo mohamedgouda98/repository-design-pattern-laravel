@@ -16,7 +16,7 @@ class CreateRepository extends Command
     use ProviderHelper;
     use DirectoryHelper;
 
-    protected $signature="repository:create {name}";
+    protected $signature="repository:create {name} {--resource}";
 
     protected $description="Create New Repository";
 
@@ -30,6 +30,7 @@ class CreateRepository extends Command
         $this->files = $filesystem;
 
         $originalName = $this->argument('name');
+        $isResource = $this->option('resource');
         $name = $this->getFileName($originalName);
         $extraPath = $this->getDirctoryPath($originalName) . '/';
 
@@ -54,12 +55,12 @@ class CreateRepository extends Command
         $this->createInterfacesFolder($interfacesPath);
         $this->createRepositoriesFolder($repositoriesPath);
 
-        $this->createInterfaceFile($interfacesPath, $interfacesName, $interfaceNameSpace);
+        $this->createInterfaceFile($interfacesPath, $interfacesName, $interfaceNameSpace, $isResource);
 
-        $this->createRepositoryFile($repositoriesPath, $repositoryName, $interfacesName, $repositoryNameSpace, $interfaceNameSpaceWithFileAndSemicolon);
+        $this->createRepositoryFile($repositoriesPath, $repositoryName, $interfacesName, $repositoryNameSpace, $interfaceNameSpaceWithFileAndSemicolon, $isResource);
 
         $controllerName= $originalName .'Controller';
-        $this->createControllerFile($controllerName);
+        $this->createControllerFile($controllerName, $isResource);
 
     }
 
