@@ -6,9 +6,15 @@ namespace Unlimited\Repository\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Pluralizer;
+use Unlimited\Repository\Classes\GeneratorContext;
+use Unlimited\Repository\Classes\InterfaceGenerator;
+use Unlimited\Repository\Classes\RepositoryGenerator;
 use Unlimited\Repository\Console\Traits\CommandHelper;
 use Unlimited\Repository\Console\Traits\DirectoryHelper;
 use Unlimited\Repository\Console\Traits\ProviderHelper;
+use Unlimited\Repository\StubGeneratorClass;
 
 class CreateRepository extends Command
 {
@@ -20,7 +26,13 @@ class CreateRepository extends Command
 
     protected $description="Create New Repository";
 
+    public $generatorContext;
+
+
     public $files;
+    public $name;
+    public $originalName;
+    public $extraPath;
 
     public $isExists = false;
 
@@ -29,39 +41,39 @@ class CreateRepository extends Command
     {
         $this->files = $filesystem;
 
-        $originalName = $this->argument('name');
+        $this->originalName = $this->argument('name');
         $isResource = $this->option('resource');
-        $name = $this->getFileName($originalName);
-        $extraPath = $this->getDirctoryPath($originalName) . '/';
+        $this->name = $this->getFileName($this->originalName);
+        $this->extraPath = $this->getDirctoryPath($this->originalName) . '/';
 
-        $repositoriesPath = base_path() . '/app/Http/Repositories/' . $extraPath;
-        $interfacesPath = base_path() . '/app/Http/Interfaces/' . $extraPath;
-
-        $interfacesName= $name . 'Interface';
-        $repositoryName= $name . 'Repository';
-
-        $interfaceNameSpace = $this->getNameSpace('Interfaces\\', $originalName);
-        $repositoryNameSpace = $this->getNameSpace('Repositories\\', $originalName);
-
-        $interfaceNameSpaceWithFileAndSemicolon = $this->getNameSpace('Interfaces\\', $originalName, true, $interfacesName);
-
-        $this->isExists = $this->isExistsFiles($interfacesPath, $interfacesName);
-        if($this->isExists == true)
+        if($this->isExistsFiles($this->name) == true)
         {
             $this->info('Repository files is exists');
             die();
         }
 
-        $this->createInterfacesFolder($interfacesPath);
-        $this->createRepositoriesFolder($repositoriesPath);
+        $this->generateInterface();
+        $this->generateRepository();
 
-        $this->createInterfaceFile($interfacesPath, $interfacesName, $interfaceNameSpace, $isResource);
-
-        $this->createRepositoryFile($repositoriesPath, $repositoryName, $interfacesName, $repositoryNameSpace, $interfaceNameSpaceWithFileAndSemicolon, $isResource);
-
-        $controllerName= $originalName .'Controller';
+        $controllerName= $this->originalName .'Controller';
         $this->createControllerFile($controllerName, $isResource);
 
+    }
+
+
+    public function generateInterface()
+    {
+        $this->generatorContext = new GeneratorContext(new InterfaceGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
+        $this->generatorContext->generateFile();
+        $this->info('Interface file was created');
+
+    }
+
+    public function generateRepository()
+    {
+        $this->generatorContext->setStrategy(new RepositoryGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
+        $this->generatorContext->generateFile();
+        $this->info('Repository file was created');
     }
 
 }

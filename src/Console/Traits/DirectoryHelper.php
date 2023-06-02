@@ -7,10 +7,18 @@ use Illuminate\Support\Facades\File;
 
 trait DirectoryHelper
 {
-    public function isExistsFiles($interfacesPath, $interfaceName)
+    public function isExistsFiles($name)
     {
-        $interfacesPath .= '/' .$interfaceName . '.php';
-        return File::exists($interfacesPath);
+        $paths = [
+            "Interface" => base_path() . '/app/Http/Interfaces/' .$name .'InterFace.php',
+            "Repository" => base_path() . '/app/Http/Repositories/'.$name .'Repository.php'];
+        foreach ($paths as $path)
+        {
+            if(File::exists($path)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getDirctoryPath($name)
@@ -45,35 +53,15 @@ trait DirectoryHelper
         return end($pathArray);
     }
 
-    protected function createInterfacesFolder($InterfacesPath)
+    protected function createFolder($path)
     {
-        if (File::exists($InterfacesPath)) {
-            $this->info('Interfaces folder already exists. Skipping.');
-
+        if (File::exists($path)) {
             return;
         }
 
-        if (! File::makeDirectory($InterfacesPath, 0755, true)) {
+        if (! File::makeDirectory($path, 0755, true)) {
             throw new RuntimeException('Cannot create Interfaces folder');
         }
-
-        $this->info('Interfaces folder was successfully created.');
     }
-
-    protected function createRepositoriesFolder($RepositoriesPath)
-    {
-        if (File::exists($RepositoriesPath)) {
-            $this->info('Repositories folder already exists. Skipping.');
-
-            return;
-        }
-
-        if (! File::makeDirectory($RepositoriesPath, 0755, true)) {
-            throw new RuntimeException('Cannot create Repositories folder');
-        }
-
-        $this->info('Repositories folder was successfully created.');
-    }
-
 
 }
