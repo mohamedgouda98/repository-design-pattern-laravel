@@ -53,6 +53,14 @@ trait DirectoryHelper
         return end($pathArray);
     }
 
+    public function getDirectoryFoldersNames($name)
+    {
+        $pathArray = explode('/', $name);
+        unset($pathArray[array_key_last($pathArray)]);
+
+        return implode('',$pathArray);
+    }
+
     protected function createFolder($path)
     {
         if (File::exists($path)) {

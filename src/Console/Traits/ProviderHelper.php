@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\File;
 
 trait ProviderHelper
 {
+    use DirectoryHelper;
+
     public $originFilesName= [];
 
     public function getFilesListInDirectory($path, $endLength, $extraPath=null)
@@ -14,18 +16,20 @@ trait ProviderHelper
             File::makeDirectory($path, 0755, true);
         }
         $files = array_diff(scandir($path), array('.', '..'));
+
         foreach ($files as $file)
         {
+
             $extension = mb_substr($file, -4);
+
             if($extension == '.php')
             {
-                $this-> originFilesName[] = ($extraPath)? $extraPath .  '\\' . substr($file, 0,$endLength) : substr($file, 0,$endLength);
+                $this->originFilesName[] = ($extraPath)? $extraPath .  '\\' . substr($file, 0,$endLength) : substr($file, 0,$endLength);
             }else{
                 $newPath = $path . '/' . $file;
                 $this->getFilesListInDirectory($newPath, $endLength, $file);
             }
         }
-
         return $this->originFilesName;
     }
 
@@ -36,8 +40,8 @@ trait ProviderHelper
         foreach ($definedFiles as $definedFile)
         {
             $this->app->bind(
-                config('RepositoryDesignPattern.interfacePath') . '\\' . $definedFile . 'Interface',
-                config('RepositoryDesignPattern.repositoryPath') . '\\' . $definedFile .'Repository'
+                'App\Http\Interfaces\\' . $definedFile . 'Interface',
+                'App\Http\Repositories\\' . $definedFile .'Repository'
             );
         }
 

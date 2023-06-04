@@ -51,12 +51,12 @@ class InterfaceGenerator implements StubGeneratorInterface
 
     public function getFileName()
     {
-        return $this->name . 'InterFace';
+        return $this->name . 'Interface';
     }
 
     public function getFilePath()
     {
-        return base_path() . '/app/Http/Interfaces/'.  $this->extraPath;
+        return base_path() . '/app/Http/Interfaces/'.  $this->getDirectoryFoldersNames($this->originalName);
     }
 
     public function getNameSpace($directory = "Interfaces\\", $semicolon= true, $withFile = null)

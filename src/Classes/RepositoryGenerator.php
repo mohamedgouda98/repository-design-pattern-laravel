@@ -15,7 +15,7 @@ class RepositoryGenerator implements StubGeneratorInterface
     public $files;
     public $name;
     public $originalName;
-    public  $path = '/app/Http/Repositories/';
+    public $path = '/app/Http/Repositories/';
     public $extraPath;
 
     public function __construct($name, $originalName, $extraPath, Filesystem $filesystem)
@@ -60,7 +60,7 @@ class RepositoryGenerator implements StubGeneratorInterface
 
     public function getFilePath()
     {
-        return base_path() . '/app/Http/Repositories/' . $this->originalName;
+        return base_path() . '/app/Http/Repositories/' . $this->getDirectoryFoldersNames($this->originalName);
     }
 
     public function getNameSpace($directory= "Repositories\\", $semicolon= true, $withFile = null)
