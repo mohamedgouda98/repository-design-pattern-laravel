@@ -8,17 +8,15 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Pluralizer;
+use Unlimited\Repository\Classes\ControllerGenerator;
 use Unlimited\Repository\Classes\GeneratorContext;
 use Unlimited\Repository\Classes\InterfaceGenerator;
 use Unlimited\Repository\Classes\RepositoryGenerator;
-use Unlimited\Repository\Console\Traits\CommandHelper;
 use Unlimited\Repository\Console\Traits\DirectoryHelper;
 use Unlimited\Repository\Console\Traits\ProviderHelper;
-use Unlimited\Repository\StubGeneratorClass;
 
 class CreateRepository extends Command
 {
-    use CommandHelper;
     use ProviderHelper;
     use DirectoryHelper;
 
@@ -54,10 +52,7 @@ class CreateRepository extends Command
 
         $this->generateInterface();
         $this->generateRepository();
-
-        $controllerName= $this->originalName .'Controller';
-        $this->createControllerFile($controllerName, $isResource);
-
+        $this->generateController();
     }
 
 
@@ -74,6 +69,13 @@ class CreateRepository extends Command
         $this->generatorContext->setStrategy(new RepositoryGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
         $this->generatorContext->generateFile();
         $this->info('Repository file was created');
+    }
+
+    public function generateController()
+    {
+        $this->generatorContext->setStrategy(new ControllerGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
+        $this->generatorContext->generateFile();
+        $this->info('Controller file was created');
     }
 
 }

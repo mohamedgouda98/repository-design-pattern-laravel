@@ -8,15 +8,15 @@ use Illuminate\Filesystem\Filesystem;
 use Unlimited\Repository\Console\Traits\DirectoryHelper;
 use Unlimited\Repository\Interfaces\StubGeneratorInterface;
 
-class InterfaceGenerator implements StubGeneratorInterface
+class ControllerGenerator implements StubGeneratorInterface
 {
     use DirectoryHelper;
 
     public $files;
     public $name;
     public $originalName;
+    public $path = '/app/Http/Controller/';
     public $extraPath;
-    public  $path = '/app/Http/Interfaces/';
 
     public function __construct($name, $originalName, $extraPath, Filesystem $filesystem)
     {
@@ -31,9 +31,9 @@ class InterfaceGenerator implements StubGeneratorInterface
         $this->createFolder($this->getFilePath());
 
         if($isResource){
-            $sourceFile = __DIR__ . "/../../stubs/RepositoryInterfaceResource.php.stub";
+            $sourceFile = __DIR__ . "/../../stubs/Repository.resource.stub";
         }else{
-            $sourceFile = __DIR__ . "/../../stubs/RepositoryInterface.php.stub";
+            $sourceFile = __DIR__ . "/../../stubs/controller.plain.stub";
         }
 
         $contents = $this->getStubContents($sourceFile,$this->getStubVariables());
@@ -45,21 +45,25 @@ class InterfaceGenerator implements StubGeneratorInterface
 
     public function getStubVariables()
     {
-        return ['RepositoryInterface' => $this->getFileName(),
-            '{Namespace}' => $this->getNameSpace()];
+        return [
+            '{{ class }}' => $this->name ."Controller",
+            '{{ namespace }}' => $this->getNameSpace(),
+            '{{ InterFaceName }}' => $this->name . "Interface",
+            '{{ useInterface }}' => $this->getNameSpace("Interfaces\\", true, $this->name . "Interface")
+        ];
     }
 
     public function getFileName()
     {
-        return $this->name . 'Interface';
+        return $this->name . 'Controller';
     }
 
     public function getFilePath()
     {
-        return base_path() . '/app/Http/Interfaces/'.  $this->getDirectoryFoldersNames($this->originalName);
+        return base_path() . '/app/Http/Controllers/' . $this->getDirectoryFoldersNames($this->originalName);
     }
 
-    public function getNameSpace($directory = "Interfaces\\", $semicolon= true, $withFile = null)
+    public function getNameSpace($directory= "Controllers\\", $semicolon= true, $withFile = null)
     {
         $pathArray = explode('/', $this->name);
         unset($pathArray[array_key_last($pathArray)]);
@@ -67,7 +71,7 @@ class InterfaceGenerator implements StubGeneratorInterface
         $withFile = ($withFile) ? '\\' . $withFile : '';
         $semicolon = ($semicolon) ? ';' : '';
 
-//        // if(the user enter a repository name with no prefix)
+        // if(the user enter a controller name with no prefix)
         if(count($pathArray) == 0){
             // delete the '\' at the end of $directory to avoid the additional '\'
             $directory =substr($directory, 0, -1);

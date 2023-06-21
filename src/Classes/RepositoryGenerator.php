@@ -31,9 +31,9 @@ class RepositoryGenerator implements StubGeneratorInterface
         $this->createFolder($this->getFilePath());
 
         if($isResource){
-            $sourceFile = __DIR__ . "/../../stubs/RepositoryClassResource.php.stub";
+            $sourceFile = __DIR__ . "/../../stubs/Repository.resource.stub";
         }else{
-            $sourceFile =  __DIR__ . "/../stubs/RepositoryClass.php.stub";
+            $sourceFile = __DIR__ . "/../../stubs/Repository.plain.stub";
         }
 
         $contents = $this->getStubContents($sourceFile,$this->getStubVariables());
