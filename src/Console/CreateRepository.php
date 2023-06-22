@@ -50,31 +50,30 @@ class CreateRepository extends Command
             die();
         }
 
-        $this->generateInterface();
-        $this->generateRepository();
-        $this->generateController();
+        $this->generateInterface($isResource);
+        $this->generateRepository($isResource);
+        $this->generateController($isResource);
     }
 
 
-    public function generateInterface()
+    public function generateInterface($isResource)
     {
         $this->generatorContext = new GeneratorContext(new InterfaceGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
-        $this->generatorContext->generateFile();
+        $this->generatorContext->generateFile($isResource);
         $this->info('Interface file was created');
-
     }
 
-    public function generateRepository()
+    public function generateRepository($isResource)
     {
         $this->generatorContext->setStrategy(new RepositoryGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
-        $this->generatorContext->generateFile();
+        $this->generatorContext->generateFile($isResource);
         $this->info('Repository file was created');
     }
 
-    public function generateController()
+    public function generateController($isResource)
     {
         $this->generatorContext->setStrategy(new ControllerGenerator($this->name, $this->originalName, $this->extraPath, $this->files));
-        $this->generatorContext->generateFile();
+        $this->generatorContext->generateFile($isResource);
         $this->info('Controller file was created');
     }
 

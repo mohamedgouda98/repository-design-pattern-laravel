@@ -13,23 +13,42 @@ class RepositoryClass implements RepositoryInterface
     {
         //toDo
     }
+    /**
+     * @param $request
+     */
     public function store($request)
     {
         //toDo
     }
 
+    /**
+     * @param $id
+     */
     public function show($id)
     {
         //toDo
     }
+
+    /**
+     * @param $id
+     */
     public function edit($id)
     {
         //toDo
     }
+
+    /**
+     * @param $request
+     * @param $id
+     */
     public function update($request, $id)
     {
         //toDo
     }
+
+    /**
+     * @param $id
+     */
     public function destroy($id)
     {
         //toDo

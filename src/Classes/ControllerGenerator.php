@@ -31,7 +31,7 @@ class ControllerGenerator implements StubGeneratorInterface
         $this->createFolder($this->getFilePath());
 
         if($isResource){
-            $sourceFile = __DIR__ . "/../../stubs/Repository.resource.stub";
+            $sourceFile = __DIR__ . "/../../stubs/controller.resource.stub";
         }else{
             $sourceFile = __DIR__ . "/../../stubs/controller.plain.stub";
         }

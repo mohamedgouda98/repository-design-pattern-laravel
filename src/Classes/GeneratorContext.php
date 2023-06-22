@@ -19,9 +19,9 @@ class GeneratorContext
         return $this->generatorInterface = $generatorInterface;
     }
 
-    public function generateFile()
+    public function generateFile($isResource)
     {
-        return $this->generatorInterface->generateFile();
+        return $this->generatorInterface->generateFile($isResource);
     }
 
 }
