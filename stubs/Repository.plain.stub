@@ -2,7 +2,8 @@
 
 namespace {Namespace}
 use interfaceNamespaceWithFile
+use Unlimited\Repository\Services\BaseEloquentService;
 
-class RepositoryClass implements RepositoryInterface
+class RepositoryClass extends BaseEloquentService implements RepositoryInterface
 {
 }

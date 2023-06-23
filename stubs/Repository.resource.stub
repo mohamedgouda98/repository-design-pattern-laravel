@@ -1,24 +1,35 @@
 <?php
 
 namespace {Namespace}
+
+use Unlimited\Repository\Services\BaseEloquentService;
 use interfaceNamespaceWithFile
 
-class RepositoryClass implements RepositoryInterface
+class RepositoryClass extends BaseEloquentService implements RepositoryInterface
 {
+    protected $modelName;
+
+    public function __construct()
+    {
+        $this->instance = $this->getNewInstance();
+    }
+
     public function index()
     {
         //toDo
     }
+
     public function create()
     {
         //toDo
     }
+
     /**
      * @param $request
      */
     public function store($request)
     {
-        //toDo
+        $this->executeSave($request->all());
     }
 
     /**
@@ -26,7 +37,7 @@ class RepositoryClass implements RepositoryInterface
      */
     public function show($id)
     {
-        //toDo
+        $row = $this->findById($id);
     }
 
     /**
@@ -34,7 +45,7 @@ class RepositoryClass implements RepositoryInterface
      */
     public function edit($id)
     {
-        //toDo
+        $this->instance = $this->findById($id);
     }
 
     /**
@@ -43,7 +54,8 @@ class RepositoryClass implements RepositoryInterface
      */
     public function update($request, $id)
     {
-        //toDo
+        $this->instance = $this->findById($id);
+        $this->executeSave($request->all());
     }
 
     /**
@@ -51,6 +63,7 @@ class RepositoryClass implements RepositoryInterface
      */
     public function destroy($id)
     {
-        //toDo
+        $this->instance = $this->findById($id);
+        $this->delete($id);
     }
 }
